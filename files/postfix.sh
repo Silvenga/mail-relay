@@ -1,12 +1,22 @@
 #!/bin/bash
 
-echo "Configuring configuration overrides for docker."
+CONFIG_SCRIPT="/config.sh"
 
-# Disable SMTPUTF8, because libraries (ICU) are missing in alpine
-postconf -e smtputf8_enable=no
+echo "Executing $CONFIG_SCRIPT."
+if [ -f $CONFIG_SCRIPT ]; then
+    echo "Config script $CONFIG_SCRIPT found, will run."
+    /bin/bash $CONFIG_SCRIPT
+    echo "Script executed and exited with code $?."
+else
+    echo "Config script $CONFIG_SCRIPT not found, will not run."
+fi
+
+echo "Configuring configuration overrides for docker."
 
 # Update aliases database. It's not used, but postfix complains if the .db file is missing
 postalias /etc/postfix/aliases
+
+postconf -e maillog_file=/dev/stdout
 
 echo "Deleting old pid files."
 rm -rf /var/spool/postfix/pid/*
