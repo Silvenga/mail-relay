@@ -1,7 +1,6 @@
-FROM alpine:3.13
+FROM alpine:3
 
 LABEL maintainer "Mark Lopez <m@silvenga.com>"
-LABEL org.opencontainers.image.source https://github.com/silvenga-docker/mail-relay
 
 # Based on https://github.com/bokysan/docker-postfix
 
